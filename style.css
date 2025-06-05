@@ -1,0 +1,504 @@
+/* ---------- CONFIGURAÇÃO GERAL ---------- */
+body {
+  font-family: Arial, sans-serif;           /* Define a fonte principal do texto como Arial, com fallback para fontes sem serifa */
+  background: linear-gradient(135deg, #7f9cf5, #8693ab);  /* Aplica um fundo em degradê diagonal (135 graus) com dois tons de azul */
+  margin: 0;                                /* Remove margens padrão do navegador ao redor da página */
+  padding: 0;                               /* Remove o espaçamento interno padrão do corpo da página */
+  color: white;                             /* Define a cor padrão do texto como branco */
+}
+
+
+/* ---------- CONTAINERS ---------- */
+.home {
+  font-family: Arial, sans-serif;                       /* Garante que o container use a fonte Arial */
+  background: linear-gradient(135deg, #7f9cf5, #8693ab); /* Define o mesmo fundo em degradê da página */
+  margin: 0;                                             /* Remove margem externa */
+  padding: 0;                                            /* Remove espaçamento interno */
+  color: white;                                          /* Define a cor do texto como branco */
+  display: flex;                                         /* Ativa o modelo de layout flexível */
+  justify-content: center;                              /* Centraliza horizontalmente o conteúdo */
+  align-items: center;                                  /* Centraliza verticalmente o conteúdo */
+  height: 100vh;                                         /* Faz com que o container ocupe 100% da altura da tela */
+}
+
+
+.login-container,
+.register-container,
+.expense-container {
+  justify-content: center;                              /* Centraliza horizontalmente o conteúdo interno */
+  align-items: center;                                  /* Centraliza verticalmente o conteúdo interno */
+  background-color: #222;                               /* Define um fundo cinza escuro */
+  padding: 30px;                                        /* Adiciona espaçamento interno de 30px */
+  border-radius: 8px;                                   /* Arredonda levemente os cantos */
+  color: white;                                         /* Define a cor do texto como branco */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);            /* Adiciona sombra ao redor para destaque */
+}
+
+.login-container,
+.register-container {
+  width: 320px;                                         /* Define largura fixa para login e registro */
+}
+
+.expense-container {
+  width: 450px;                                         /* Define largura maior para o container de despesas */
+}
+
+
+/* ---------- FORMULÁRIOS ---------- */
+label {
+  display: block;                  /* Faz o label ocupar uma linha inteira */
+  margin: 12px 0 6px;              /* Espaço acima de 12px e abaixo de 6px */
+}
+
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="text"] {
+  width: 100%;                    /* Ocupa toda a largura disponível */
+  padding: 8px;                   /* Espaçamento interno de 8px */
+  border-radius: 4px;             /* Arredonda os cantos dos inputs */
+  border: none;                   /* Remove a borda padrão */
+  font-size: 1em;                 /* Define o tamanho da fonte como 1x o padrão */
+}
+
+input.half {
+  width: calc(50% - 10px);        /* Ocupa metade da largura menos 10px para espaçamento */
+  display: inline-block;          /* Permite ficar ao lado de outros elementos */
+  margin-right: 20px;             /* Espaço à direita de 20px */
+}
+
+button {
+  margin-top: 20px;               /* Espaço acima do botão */
+  width: 100%;                    /* Ocupa toda a largura do container */
+  background-color: #2980b9;      /* Cor azul do botão */
+  border: none;                   /* Remove borda padrão */
+  padding: 12px;                  /* Espaçamento interno */
+  border-radius: 6px;             /* Cantos arredondados */
+  color: white;                   /* Cor do texto branca */
+  font-weight: bold;              /* Texto em negrito */
+  cursor: pointer;                /* Cursor vira “mãozinha” ao passar por cima */
+  font-size: 1.1em;               /* Tamanho da fonte levemente maior */
+}
+
+.editar-btn {
+  background-color: #f1c40f;      /* Cor de fundo amarela */
+  color: black;                   /* Texto preto */
+  border: none;                   /* Remove a borda */
+  padding: 6px 10px;              /* Espaçamento interno */
+  border-radius: 4px;             /* Cantos arredondados */
+  cursor: pointer;                /* Cursor tipo “mãozinha” */
+}
+
+button:hover {
+  background-color: #1c5980;      /* Altera a cor ao passar o mouse (hover) */
+}
+
+
+/* ---------- TÍTULOS ---------- */
+h1 {
+  margin-bottom: 20px;       /* Espaço inferior de 20px abaixo do título */
+  text-align: center;        /* Centraliza o texto do título */
+}
+
+/* ---------- LINKS ---------- */
+.register-link,
+.login-link {
+  margin-top: 12px;          /* Espaço acima dos links */
+  text-align: center;        /* Centraliza os links */
+}
+
+.register-link a,
+.login-link a {
+  color: #a0c4ff;            /* Define a cor azul clara para os links */
+  text-decoration: none;     /* Remove o sublinhado padrão */
+}
+
+.register-link a:hover,
+.login-link a:hover {
+  text-decoration: underline; /* Sublinha o link quando passa o mouse por cima */
+}
+
+
+/* ---------- HOME (TOP BAR) ---------- */
+.top-bar {
+  position: relative;        /* Permite posicionar elementos internos de forma absoluta */
+  display: flex;             /* Usa Flexbox para alinhar elementos horizontalmente */
+  align-items: center;       /* Alinha verticalmente os itens ao centro */
+  background-color: #050505; /* Cor de fundo escura para a barra superior */
+  padding: 10px 25px;        /* Espaçamento interno: 10px em cima/baixo e 25px nas laterais */
+  height: 70px;              /* Altura fixa da barra */
+  z-index: 10;               /* Garante que fique sobreposto a outros elementos (camada superior) */
+}
+
+.logo {
+  font-size: 1.8em;          /* Tamanho da fonte grande para o texto do logo */
+  font-weight: bold;         /* Negrito */
+  user-select: none;         /* Impede que o texto seja selecionado pelo usuário */
+}
+
+.menu-container {
+  display: flex;               /* Cria um contêiner flexível para alinhar os itens */
+  justify-content: space-between; /* Espaça os itens ao máximo dentro do contêiner */
+  align-items: center;         /* Alinha os itens verticalmente ao centro */
+}
+
+/* Estilo do botão hamburguer (ícone de menu) */
+.hamburguer {
+  display: flex;               /* Flexbox para empilhar as barras verticalmente */
+  flex-direction: column;      /* Alinha os filhos (barras) em coluna */
+  cursor: pointer;             /* Mostra o cursor de clique */
+  gap: 5px;                    /* Espaçamento entre as barras do menu */
+}
+
+.bar {
+  width: 30px;                 /* Largura de cada barra */
+  height: 4px;                 /* Altura de cada barra */
+  background-color: #fff;      /* Cor branca */
+  border-radius: 5px;          /* Bordas arredondadas */
+}
+
+.nav-menu {
+  display: none;               /* Esconde o menu por padrão */
+  flex-direction: column;      /* Quando visível, organiza os itens em coluna */
+  gap: 10px;                   /* Espaço entre os links */
+  align-items: center;         /* Centraliza horizontalmente os itens */
+}
+
+.nav-menu ul {
+  list-style-type: none;       /* Remove os marcadores padrão da lista */
+  padding: 0;                  /* Remove o preenchimento interno da lista */
+}
+
+.nav-menu a {
+  text-decoration: none;       /* Remove o sublinhado padrão dos links */
+  color: #fff;                 /* Cor do texto dos links */
+  font-size: 18px;             /* Tamanho da fonte dos links */
+  padding: 10px 20px;          /* Espaço interno dos links */
+  transition: background-color 0.3s; /* Animação suave na mudança de cor ao passar o mouse */
+}
+
+.nav-menu a:hover {
+  background-color: #575757;   /* Cor de fundo quando o mouse passa sobre o link */
+}
+
+.nav-menu.open {
+  display: flex;               /* Mostra o menu quando a classe "open" é ativada via JS */
+}
+
+
+/* ---------- ÁREA DE CÍRCULOS ---------- */
+.circles-container {
+  display: flex;               /* Usa flexbox para layout responsivo em linha */
+  flex-wrap: wrap;             /* Permite que os itens quebrem para a linha de baixo, se necessário */
+  justify-content: center;     /* Centraliza os círculos horizontalmente */
+  gap: 20px;                   /* Espaçamento entre os círculos */
+  padding: 30px;               /* Espaço interno ao redor do contêiner */
+  background-color: #5a6a91;   /* Cor de fundo da área de categorias */
+}
+
+
+.circle {
+  width: 60px;                         /* Largura do círculo */
+  height: 60px;                        /* Altura igual à largura para formar um círculo */
+  background-color: rgb(236, 236, 236); /* Cor de fundo clara */
+  border-radius: 50%;                 /* Torna o elemento perfeitamente circular */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidade */
+  cursor: pointer;                    /* Altera o cursor para indicar que é clicável */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Suaviza transições */
+  display: flex;                      /* Usa flexbox para centralizar o conteúdo interno */
+  align-items: center;               /* Centraliza verticalmente */
+  justify-content: center;           /* Centraliza horizontalmente */
+  font-size: 32px;                   /* Tamanho do texto (não está sendo usado com ícone, mas está aqui por padrão) */
+  vertical-align: middle;           /* Alinha verticalmente caso usado com outros elementos inline */
+  color: white;                      /* Cor do conteúdo (ex: texto) */
+  text-align: center;                /* Alinha texto ao centro */
+}
+
+.circle:hover {
+  background-color: #1c5980;         /* Cor ao passar o mouse sobre o círculo */
+  transform: scale(1.1);             /* Efeito de leve ampliação ao passar o mouse */
+}
+
+.circle img {
+  width: 32px;                       /* Largura da imagem dentro do círculo */
+  height: 32px;                      /* Altura da imagem */
+  object-fit: contain;              /* Garante que a imagem se ajuste sem distorcer */
+}
+
+/* ---------- ÁREA DE GRÁFICOS ---------- */
+.graph-area {
+  background-color: #222;                      /* Fundo escuro para o container do gráfico */
+  margin: 25px auto;                           /* Margem superior e inferior, centralizado horizontalmente */
+  width: 90%;                                  /* Ocupa 90% da largura da tela */
+  max-width: 900px;                            /* Limita a largura máxima a 900px */
+  height: 350px;                               /* Altura fixa do container */
+  border-radius: 10px;                         /* Cantos arredondados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);    /* Sombra para efeito de profundidade */
+  display: flex;                               /* Flexbox para centralizar conteúdo */
+  justify-content: center;                     /* Centraliza horizontalmente */
+  align-items: center;                         /* Centraliza verticalmente */
+  font-size: 1.6em;                             /* Tamanho da fonte */
+  color: #ccc;                                 /* Cor do texto dentro do gráfico */
+  user-select: none;                           /* Impede seleção de texto */
+}
+
+.graph-section {
+  background-color: #050505;                   /* Cor de fundo escura para a seção do gráfico */
+  margin: 40px auto;                           /* Margem superior e inferior, centralizado */
+  padding: 20px;                               /* Espaçamento interno */
+  border-radius: 10px;                         /* Bordas arredondadas */
+  max-width: 800px;                            /* Largura máxima da seção */
+  text-align: center;                          /* Alinha o conteúdo ao centro */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);    /* Sombra para destaque visual */
+}
+
+.graph-section h2 {
+  color: #fff;                                 /* Cor branca para o título */
+  margin-bottom: 20px;                         /* Espaçamento abaixo do título */
+}
+
+.grafico-img {
+  width: 100%;                                 /* Imagem ocupa toda a largura do container */
+  max-width: 600px;                            /* Largura máxima da imagem */
+  border-radius: 10px;                         /* Bordas arredondadas */
+  margin-bottom: 15px;                         /* Espaço abaixo da imagem */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);        /* Sombra para profundidade */
+}
+
+
+.botao-atualizar {
+  padding: 10px 20px;                   /* Espaçamento interno do botão: 10px vertical, 20px horizontal */
+  background-color: #2980b9;           /* Cor de fundo azul */
+  color: white;                        /* Cor do texto */
+  border: none;                        /* Remove a borda */
+  border-radius: 6px;                  /* Bordas arredondadas */
+  cursor: pointer;                     /* Cursor de mão ao passar por cima */
+  font-weight: bold;                   /* Deixa o texto em negrito */
+}
+
+.botao-atualizar:hover {
+  background-color: #1c5980;           /* Cor de fundo mais escura ao passar o mouse */
+}
+
+.botao-exportar {
+  display: flex;                       /* Usa flexbox para alinhar conteúdo interno */
+  padding: 10px 20px;                  /* Espaçamento interno */
+  background-color: #8a0808;           /* Cor de fundo vermelha */
+  color: white;                        /* Cor do texto */
+  top: 23%;                            /* Posição vertical relativa (geralmente usada com position) */
+  max-width: 300px;                    /* Largura máxima do botão */
+  border: none;                        /* Remove a borda */
+  border-radius: 6px;                  /* Bordas arredondadas */
+  cursor: pointer;                     /* Cursor de mão */
+  font-weight: bold;                   /* Texto em negrito */
+  transform: translateY(-50%);         /* Move o botão 50% para cima no eixo Y */
+  flex-wrap: wrap;                     /* Permite que o conteúdo interno quebre linha, se necessário */
+}
+
+.botao-adicionar {
+  display: flex;                       /* Usa flexbox */
+  padding: 10px 20px;                  /* Espaçamento interno */
+  background-color: #b3b600;           /* Cor de fundo amarela */
+  color: white;                        /* Cor do texto */
+  max-width: 300px;                    /* Largura máxima do botão */
+  border: none;                        /* Sem borda */
+  border-radius: 6px;                  /* Bordas arredondadas */
+  cursor: pointer;                     /* Cursor de mão */
+  font-weight: bold;                   /* Texto em negrito */
+  transform: translateY(-50%);         /* Move o botão 50% para cima verticalmente */
+  flex-wrap: wrap;                     /* Permite quebra de linha no conteúdo interno */
+}
+
+
+.logo-img {
+  height: 150%;              /* Faz a altura da imagem ser 150% do tamanho padrão do elemento pai */
+  max-height: 120px;         /* Limita a altura máxima da imagem a 120 pixels */
+  width: auto;               /* Mantém a proporção da imagem automaticamente (evita distorção) */
+}
+
+footer {
+  height: 30vh;                    /* Define a altura do rodapé como 30% da altura da janela visível */
+  background-color: #050505;       /* Define a cor de fundo do rodapé como preto quase puro */
+}
+
+.github img {
+  background-color: white;         /* Define o fundo das imagens dentro do GitHub como branco (para destacar o ícone) */
+}
+
+.container-superior {
+  display: flex;                   /* Usa flexbox para organizar os elementos do container */
+  justify-content: space-between; /* Espaça os itens igualmente, com um em cada extremidade */
+  align-items: center;            /* Alinha os itens verticalmente ao centro */
+  padding: 20px 40px;             /* Adiciona espaçamento interno (20px em cima/baixo e 40px nas laterais) */
+  background-color: #5a6a91;      /* Define o fundo do container como azul acinzentado */
+  flex-wrap: wrap;                /* Permite que os elementos quebrem para a linha seguinte se necessário */
+}
+
+.titulo-despesas {
+  margin: 0;                      /* Remove a margem padrão */
+  font-size: 2em;                 /* Define o tamanho da fonte como duas vezes o tamanho padrão */
+  text-align: center;            /* Centraliza o texto horizontalmente */
+  flex: 1;                        /* Permite que o elemento ocupe todo o espaço disponível */
+}
+
+.botoes-superiores {
+  display: flex;                  /* Usa flexbox para os botões */
+  flex-direction: column;        /* Organiza os botões em coluna */
+  align-items: flex-end;         /* Alinha os botões à direita do container */
+}
+
+
+.mensagem-flash {
+  color: white;                                 /* Define a cor do texto como branco */
+  padding: 10px;                                /* Espaçamento interno de 10px em todos os lados */
+  margin: 10px;                                 /* Espaçamento externo de 10px em todos os lados */
+  border-radius: 5px;                           /* Arredonda os cantos da caixa com 5px */
+  font-weight: bold;                            /* Deixa o texto em negrito */
+  text-align: center;                           /* Centraliza o texto horizontalmente */
+  transition: opacity 0.5s ease, transform 0.5s ease;  /* Animação suave ao sumir (opacidade e movimento) */
+}
+
+.mensagem-flash.fade-out {
+  opacity: 0;                                   /* Torna o elemento invisível */
+  transform: translateY(-10px);                 /* Move o elemento 10px para cima ao sumir */
+}
+
+.user-circle {
+  width: 45px;                                  /* Define largura fixa de 45px */
+  height: 45px;                                 /* Define altura fixa de 45px */
+  background-color: white;                      /* Fundo branco */
+  border-radius: 50%;                           /* Forma um círculo perfeito */
+  overflow: hidden;                             /* Esconde o que ultrapassar do círculo */
+  cursor: pointer;                              /* Muda o cursor para indicar que é clicável */
+  display: flex;                                /* Usa flexbox para centralizar a imagem */
+  justify-content: center;                      /* Centraliza horizontalmente */
+  align-items: center;                          /* Centraliza verticalmente */
+  margin-left: 15px;                            /* Espaçamento à esquerda */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);         /* Sombra leve ao redor do círculo */
+}
+
+.user-circle img {
+  width: 70%;                                   /* A imagem ocupa 70% da largura do círculo */
+  height: auto;                                 /* Altura ajusta automaticamente mantendo proporção */
+}
+
+.user-dropdown {
+  display: none;                        /* Esconde o menu inicialmente */
+  position: absolute;                   /* Posiciona de forma flutuante em relação ao topo/barra */
+  top: 70px;                            /* Distância de 70px do topo (ajustado para ficar abaixo do ícone) */
+  right: 25px;                          /* Distância de 25px da lateral direita da tela */
+  background-color: #222;              /* Cor de fundo escura (cinza quase preto) */
+  color: white;                         /* Cor do texto branco */
+  border-radius: 6px;                   /* Bordas levemente arredondadas */
+  padding: 15px 20px;                   /* Espaçamento interno maior: 15px em cima/baixo e 20px laterais */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);/* Sombra ao redor para destaque visual */
+  z-index: 100;                         /* Garante que fique sobre outros elementos da tela */
+  text-align: left;                     /* Alinha o conteúdo à esquerda */
+  font-size: 1.1em;                     /* Aumenta o tamanho da fonte padrão do dropdown */
+  min-width: 160px;                     /* Garante uma largura mínima para o menu suspenso */
+}
+.user-dropdown p {
+  margin: 0 0 10px 0;                   /* Sem margem em cima, 10px abaixo, nenhuma nas laterais */
+  font-weight: bold;                   /* Texto em negrito (usado no nome do usuário) */
+  font-size: 1.1em;                     /* Aumenta o tamanho da fonte do nome */
+}
+
+.user-dropdown a {
+  color: #a0c4ff;                      /* Cor azulada clara para o link "Logout" */
+  text-decoration: none;               /* Remove o sublinhado padrão do link */
+  font-size: 1em;                      /* Aumenta levemente o tamanho da fonte do link */
+}
+
+
+.user-dropdown a:hover {
+  text-decoration: underline;                    /* Adiciona sublinhado ao passar o mouse */
+}
+
+
+.logo-container {
+  position: absolute;          /* Posiciona absolutamente em relação ao contêiner pai */
+  left: 50%;                   /* Move o elemento até 50% da largura da tela */
+  transform: translateX(-50%);/* Reposiciona o elemento para que fique exatamente centralizado */
+}
+
+.user-container {
+  margin-left: auto;           /* Empurra o elemento para a extrema direita dentro de um flex container */
+  display: flex;               /* Usa flexbox para alinhar conteúdo */
+  align-items: center;         /* Alinha verticalmente os itens ao centro */
+}
+
+
+.login-page {
+  display: flex;                         /* Cria layout em linha com flexbox */
+  height: 100vh;                         /* Altura igual à altura total da tela */
+  background: linear-gradient(black);    /* Fundo com degradê (única cor: preto, visual sólido) */
+  overflow: hidden;                      /* Oculta qualquer conteúdo que ultrapasse o contêiner */
+}
+
+.login-form-container {
+  width: 50%;                            /* Ocupa metade da tela */
+  display: flex;                         /* Flexbox para centralizar conteúdo */
+  justify-content: center;              /* Centraliza horizontalmente */
+  align-items: center;                  /* Centraliza verticalmente */
+}
+
+.login-form {
+  background-color: #222;               /* Fundo escuro para o formulário */
+  padding: 40px;                        /* Espaçamento interno generoso */
+  border-radius: 10px;                  /* Cantos arredondados */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);/* Sombra para destaque */
+  width: 90%;                           /* Largura relativa à div pai */
+  max-width: 300px;                     /* Limita a largura máxima */
+  color: white;                         /* Texto branco */
+}
+
+.login-form img {
+  display: block;                       /* Exibe a imagem como bloco para centralizar */
+  margin: 0 auto 20px;                  /* Centraliza horizontalmente e adiciona margem inferior */
+  max-width: 150px;                     /* Define largura máxima da logo */
+}
+
+.login-form h1 {
+  text-align: center;                   /* Centraliza o título */
+  margin-bottom: 25px;                  /* Espaço abaixo do título */
+}
+
+
+.login-image {
+  width: 50%;                           /* Ocupa a metade direita da tela */
+  background-image: url('../img/financeiro.jpg'); /* Caminho da imagem de fundo */
+  background-size: cover;              /* Faz a imagem cobrir toda a área */
+  background-position: center;         /* Centraliza a imagem */
+}
+
+
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column;            /* Muda de linha para coluna (formulário em cima da imagem) */
+  }
+
+  .login-image {
+    display: none;                     /* Esconde a imagem em dispositivos menores */
+  }
+
+  .login-form-container {
+    width: 100%;                       /* O formulário ocupa toda a largura */
+    height: 100vh;                     /* Ocupa toda a altura da tela */
+  }
+}
+
+.botao-adicionar,
+.botao-exportar {
+  text-decoration: none; /* Remove sublinhado */
+}
+
+.sobre-box {
+  background-color: #222;             /* fundo escuro */
+  color: white;                       /* texto branco */
+  padding: 30px;                      /* espaçamento interno */
+  border-radius: 10px;                /* cantos arredondados */
+  max-width: 800px;                   /* largura máxima */
+  margin: 40px auto;                  /* centraliza */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);  /* sombra */
+  line-height: 1.6;                   /* altura entre linhas */
+}

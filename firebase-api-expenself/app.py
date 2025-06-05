@@ -1,0 +1,33 @@
+from flask import Flask, request, jsonify
+import firebase_admin
+from firebase_admin import credentials, firestore
+import os
+
+app = Flask(__name__)
+
+# Caminho para a chave de serviço
+cred = credentials.Certificate("firebase-key.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+@app.route("/enviar", methods=["POST"])
+def enviar():
+    data = request.json
+    nome = data.get("nome")
+    valor = data.get("valor")
+    usuario = data.get("usuario", "desconhecido")
+
+    if not nome or not valor:
+        return jsonify({"error": "Nome e valor são obrigatórios"}), 400
+
+    doc_ref = db.collection("despesas").document()
+    doc_ref.set({
+        "nome": nome,
+        "valor": valor,
+        "usuario": usuario
+    })
+
+    return jsonify({"mensagem": "Despesa enviada com sucesso!"})
+
+if __name__ == "__main__":
+    app.run(debug=True)
