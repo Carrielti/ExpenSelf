@@ -6,26 +6,21 @@ import json
 
 app = Flask(__name__)
 
-# Inicializa o Firebase apenas uma vez
-if not firebase_admin._apps:
-    firebase_config = json.loads(os.environ['FIREBASE-KEY'])
-    cred = credentials.Certificate(firebase_config)
-    firebase_admin.initialize_app(cred)
+# Carrega a chave do Firebase da variável de ambiente
+firebase_key_data = os.getenv("FIREBASE_KEY")
 
+# Converte o JSON da string da variável de ambiente
+cred = credentials.Certificate(json.loads(firebase_key_data))
+firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-@app.route('/listar', methods=['GET'])
-def listar_despesas():
-    try:
-        despesas_ref = db.collection('despesas')
-        docs = despesas_ref.stream()
+# Endpoint para enviar despesas
+@app.route("/enviar", methods=["POST"])
+def enviar():
+    data = request.json
+    nome = data.get("nome")
+    valor = data.get("valor")
+    usuario = data.get("usuario", "desconhecido")
 
-        lista_despesas = []
-        for doc in docs:
-            despesa = doc.to_dict()
-            despesa['id'] = doc.id
-            lista_despesas.append(despesa)
-
-        return jsonify(lista_despesas), 200
-    except Exception as e:
-        return jsonify({'erro': str(e)}), 500
+    if not nome or not valor:
+        return jsonify({"error": "Nome e valor são obrigatórios"}), 400
