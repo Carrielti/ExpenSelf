@@ -21,10 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $update = $conn->prepare("UPDATE despesas SET nome=?, valor=? WHERE id_despesa=?");
         $update->bind_param("sdi", $nome, $valor, $id_despesa);
         if ($update->execute()) {
-            // --- Executa script Python para atualizar no Firebase ---
-            $comando = escapeshellcmd("python enviar_firebase.py \"$nome\" $valor \"$id_usuario\" editar");
-            exec($comando);
-
             header("Location: listar_despesas.php?msg=editada");
             exit();
         } else {

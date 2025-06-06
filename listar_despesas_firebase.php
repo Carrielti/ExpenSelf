@@ -146,7 +146,6 @@ if ($response === FALSE) {
     <tr>
       <th>Nome</th>
       <th>Valor (R$)</th>
-      <th>Usuário</th>
       <th>Ações</th>
     </tr>
     <?php if (!empty($despesas)): ?>
@@ -154,7 +153,6 @@ if ($response === FALSE) {
         <tr>
           <td><?= htmlspecialchars($linha['nome']) ?></td>
           <td><?= number_format($linha['valor'], 2, ',', '.') ?></td>
-          <td><?= htmlspecialchars($linha['usuario']) ?></td>
           <td class="botoes">
             <!-- Simulação de editar/excluir via ID Firebase -->
             <form action="editar_despesa_firebase.php" method="GET" style="display:inline;">

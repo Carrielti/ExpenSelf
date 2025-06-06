@@ -13,7 +13,6 @@ if (!isset($_GET['id_despesa'])) {
 $id_despesa = intval($_GET['id_despesa']);
 $id_usuario = $_SESSION['id_usuario'];
 
-// Consulta segura para obter a despesa do usuário logado
 $sql = $conn->prepare("SELECT * FROM despesas WHERE id_despesa = ? AND id_usuario = ?");
 $sql->bind_param("ii", $id_despesa, $id_usuario);
 $sql->execute();
