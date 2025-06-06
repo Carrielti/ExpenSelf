@@ -2,11 +2,15 @@ from flask import Flask, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, firestore
 import os
+import json
 
 app = Flask(__name__)
 
-# Caminho para a chave de serviço
-cred = credentials.Certificate("firebase-key.json")
+# Carrega a chave do Firebase da variável de ambiente
+firebase_key_data = os.getenv("FIREBASE_KEY")
+
+# Converte o JSON da string da variável de ambiente
+cred = credentials.Certificate(json.loads(firebase_key_data))
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
