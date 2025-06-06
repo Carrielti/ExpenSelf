@@ -31,9 +31,10 @@ $nome = $_SESSION['nome']; // <- Aqui define corretamente a variável $nome
     <nav id="nav-menu" class="nav-menu">
       <ul>
         <li><a href="e_home.php">Home</a></li><br>
-        <li><a href="listar_despesas.php">Despesas</a></li><br>
-        <li><a href="e_sobre.php">Sobre</a></li><br>
-        <li><a href="e_contato.php">Contato</a></li><br>
+          <li><a href="listar_despesas.php">Despesas</a></li><br>
+          <li><a href="listar_receitas.php">Receitas</a></li><br>
+          <li><a href="e_sobre.php">Sobre</a></li><br>
+          <li><a href="e_contato.php">Contato</a></li><br>
       </ul>
     </nav>
   </div>

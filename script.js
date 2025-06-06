@@ -96,5 +96,3 @@ hamburguer.addEventListener("click", () => {
       dropdown.style.display = "none";
     }
   });
-
-  

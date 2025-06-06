@@ -10,7 +10,7 @@ $id_usuario = $_SESSION['id_usuario'];
 $nome_usuario = $_SESSION['nome'];
 
 // ❌ Removido o campo data_despesa da consulta
-$sql = "SELECT id_despesa, nome, valor FROM despesas WHERE id_usuario = $id_usuario";
+$sql = "SELECT id_despesa, nome, valor, data_despesa FROM despesas WHERE id_usuario = $id_usuario ORDER BY data_despesa DESC";
 $result = $conn->query($sql);
 ?>
 
@@ -74,9 +74,10 @@ $result = $conn->query($sql);
     <nav id="nav-menu" class="nav-menu">
       <ul>
         <li><a href="e_home.php">Home</a></li><br>
-        <li><a href="listar_despesas.php">Despesas</a></li><br>
-        <li><a href="e_sobre.php">Sobre</a></li><br>
-        <li><a href="e_contato.php">Contato</a></li><br>
+          <li><a href="listar_despesas.php">Despesas</a></li><br>
+          <li><a href="listar_receitas.php">Receitas</a></li><br>
+          <li><a href="e_sobre.php">Sobre</a></li><br>
+          <li><a href="e_contato.php">Contato</a></li><br>
       </ul>
     </nav>
   </div>
@@ -118,9 +119,9 @@ $result = $conn->query($sql);
   <div class="container-superior">
   <h1 class="titulo-despesas">Despesas de <?php echo htmlspecialchars($nome_usuario); ?></h1>
 
-  <div class="botoes-superiores">
+ <div class="botoes-superiores">
     <button class="botao-adicionar" onclick="location.href='e_nova_despesa.html'">Adicionar Despesa</button>
-    <button class="botao-exportar" onclick="location.href='exportar_pdf.php'">Exportar para PDF</button>
+    <button on class="botao-exportar" onclick="location.href='exportar_despesas_pdf.php'">Exportar para PDF</button>
   </div>
 </div>
 
@@ -128,15 +129,18 @@ $result = $conn->query($sql);
     <tr>
       <th>Nome</th>
       <th>Valor (R$)</th>
+      <th>Data</th>
       <th>Ações</th>
     </tr>
+
 
     <?php if ($result->num_rows > 0): ?>
       <?php while ($linha = $result->fetch_assoc()): ?>
         <tr>
-          <td><?= htmlspecialchars($linha['nome']) ?></td>
-          <td><?= number_format($linha['valor'], 2, ',', '.') ?></td>
-          <td class="botoes">
+           <td><?= htmlspecialchars($linha['nome']) ?></td>
+            <td><?= number_format($linha['valor'], 2, ',', '.') ?></td>
+            <td><?= date("d/m/Y", strtotime($linha['data_despesa'])) ?></td>
+            <td class="botoes">
             <!-- Botão Editar -->
             <form action="editar_despesa.php" method="GET" style="display:inline;">
               <input type="hidden" name="id_despesa" value="<?= $linha['id_despesa'] ?>">

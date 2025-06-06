@@ -509,3 +509,33 @@ input {
   border-radius: 5px;
   font-size: 16px;
 }
+
+.caixa-saldo {
+  max-width: 300px;
+  margin: 30px auto;
+  padding: 15px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  text-align: center;
+  font-size: 1.0em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.saldo-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.caixa-saldo {
+  display: inline-block;
+  background-color: white;
+  color: black;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}

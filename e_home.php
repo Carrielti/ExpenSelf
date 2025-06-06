@@ -25,13 +25,14 @@ $nome = $_SESSION['nome'];
         <div class="bar"></div>
       </div>
       <nav id="nav-menu" class="nav-menu">
-        <ul>
-          <li><a href="e_home.php">Home</a></li><br>
+      <ul>
+        <li><a href="e_home.php">Home</a></li><br>
           <li><a href="listar_despesas.php">Despesas</a></li><br>
+          <li><a href="listar_receitas.php">Receitas</a></li><br>
           <li><a href="e_sobre.php">Sobre</a></li><br>
           <li><a href="e_contato.php">Contato</a></li><br>
-        </ul>
-      </nav>
+      </ul>
+    </nav>
     </div>
 
     <div class="logo-container">
@@ -71,10 +72,28 @@ $nome = $_SESSION['nome'];
     </form>
   </div>
 
-  <div class="graph-section">
-    <h2>Resumo Visual dos Seus Gastos</h2>
+  <div class="graph-section" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
+  <div>
+    <h2>Gastos por Categoria</h2>
     <canvas id="graficoDespesas" width="400" height="200"></canvas>
   </div>
+  <div>
+    <h2>Receitas x Despesas</h2>
+    <canvas id="graficoComparativo" width="400" height="200"></canvas>
+  </div>
+</div>
+
+<div class="saldo-section">
+  <h3>Saldo Mensal Atual</h3>
+  <div id="saldo-mensal" class="caixa-saldo">Carregando saldo...</div>
+</div>
+
+
+  <div id="resumo-financeiro" class="caixa-saldo">
+  <strong>Calculando saldo...</strong>
+</div>
+
+  <script src="script.js"></script>
 
   <script>
     let grafico;
@@ -128,6 +147,65 @@ $nome = $_SESSION['nome'];
       const dropdown = document.getElementById("userDropdown");
       dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
     }
+
+    fetch('calcular_saldo.php')
+  .then(res => res.json())
+  .then(data => {
+    const resumo = document.getElementById('resumo-financeiro');
+    const saldoFormatado = data.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const cor = data.saldo >= 0 ? 'green' : 'red';
+    resumo.innerHTML = `<strong style="color: ${cor};">Saldo: ${saldoFormatado}</strong>`;
+  })
+  .catch(() => {
+    document.getElementById('resumo-financeiro').innerText = 'Erro ao calcular saldo';
+  });
+
+function gerarGraficoComparativo() {
+  fetch('dados_comparativo.php')
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('graficoComparativo').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Receitas', 'Despesas'],
+          datasets: [{
+            label: 'R$',
+            data: [data.receitas, data.despesas],
+            backgroundColor: ['rgba(46, 204, 113, 0.6)', 'rgba(231, 76, 60, 0.6)'],
+            borderColor: ['rgba(46, 204, 113, 1)', 'rgba(231, 76, 60, 1)'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  gerarGrafico();             // gráfico de categorias
+  gerarGraficoComparativo(); // gráfico receitas vs despesas
+});
+
+// Chama API de saldo mensal
+fetch("calcular_saldo_mensal.php")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("saldo-mensal").innerText =
+      `Receitas: R$ ${data.receita} | Despesas: R$ ${data.despesa} | Saldo: R$ ${data.saldo}`;
+  })
+  .catch(() => {
+    document.getElementById("saldo-mensal").innerText = "Erro ao calcular saldo.";
+  });
+
+
   </script>
 
 </body>
