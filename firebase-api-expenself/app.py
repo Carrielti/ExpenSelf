@@ -34,7 +34,7 @@ def enviar():
 
     return jsonify({"mensagem": "Despesa enviada com sucesso!"})
 
-# Novo endpoint para listar despesas
+# Endpoint para listar despesas
 @app.route("/listar", methods=["GET"])
 def listar():
     try:
@@ -48,6 +48,38 @@ def listar():
             despesas.append(item)
 
         return jsonify(despesas), 200
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
+
+# ✅ Novo endpoint para editar uma despesa
+@app.route("/editar/<id>", methods=["PUT"])
+def editar_despesa(id):
+    try:
+        data = request.get_json()
+        nome = data.get("nome")
+        valor = data.get("valor")
+        usuario = data.get("usuario", "desconhecido")
+
+        if not nome or valor is None:
+            return jsonify({"erro": "Nome e valor são obrigatórios"}), 400
+
+        doc_ref = db.collection("despesas").document(id)
+        doc_ref.update({
+            "nome": nome,
+            "valor": valor,
+            "usuario": usuario
+        })
+
+        return jsonify({"mensagem": "Despesa atualizada com sucesso!"})
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
+
+# ✅ Novo endpoint para excluir uma despesa
+@app.route("/excluir/<id>", methods=["DELETE"])
+def excluir_despesa(id):
+    try:
+        db.collection("despesas").document(id).delete()
+        return jsonify({"mensagem": "Despesa excluída com sucesso!"})
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
 
