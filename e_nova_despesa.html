@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ExpenSelf - Inserir Despesa</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="/img/icone-logo.png" type="image/png" />
+  </head>
+
+  <body>
+    <div class="home">
+      <div class="expense-container">
+        <h1>Inserir Nova Despesa</h1>
+        <form action="inserir_despesa.php" method="POST">
+          <label for="nome">Nome da Despesa</label>
+          <input
+            list="categorias"
+            id="nome"
+            name="nome"
+            placeholder="Escolha ou digite"
+            required
+          />
+          <datalist id="categorias">
+            <option value="Aluguel"></option>
+            <option value="Mercado"></option>
+            <option value="Transporte"></option>
+            <option value="Energia"></option>
+            <option value="Água"></option>
+            <option value="Internet"></option>
+            <option value="Educação"></option>
+            <option value="Saúde"></option>
+            <option value="Lazer"></option>
+            <option value="Celular"></option>
+            <option value="Farmácia"></option>
+            <option value="Roupas"></option>
+          </datalist> 
+
+          <label for="valor">Valor Estipulado</label>
+          <input
+            type="number"
+            step="0.01"
+            id="valor"
+            name="valor"
+            placeholder="00.00"
+            required
+          />
+
+          <button type="submit">Inserir</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

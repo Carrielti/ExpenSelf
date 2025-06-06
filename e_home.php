@@ -3,7 +3,6 @@ session_start();
 if (!isset($_SESSION['id_usuario'])) {
     echo "<script>alert('Acesso negado. Faça login!'); window.location.href='index.html';</script>";
 }
-
 $nome = $_SESSION['nome'];
 ?>
 <!DOCTYPE html>
@@ -14,6 +13,7 @@ $nome = $_SESSION['nome'];
   <title>ExpenSelf - Home</title>
   <link rel="stylesheet" href="style.css"/>
   <link rel="icon" href="/img/icone-logo.png" type="image/png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -57,15 +57,11 @@ $nome = $_SESSION['nome'];
       "Educação" => "educacao", "Saúde" => "saude", "Lazer" => "jogos",
       "Celular" => "smartphone", "Farmácia" => "medicine", "Roupas" => "roupas"
     ];
-
     foreach ($categorias as $nomeCat => $img) {
       echo '
-      <form action="gerar_grafico.php" method="POST" style="display:inline;">
-        <input type="hidden" name="highlight" value="'.htmlspecialchars($nomeCat).'">
-        <button class="circle" type="submit" title="'.htmlspecialchars($nomeCat).'">
-          <img src="/img/'.$img.'.png" alt="'.htmlspecialchars($nomeCat).'">
-        </button>
-      </form>';
+      <button class="circle" onclick="destacarCategoria(\''.htmlspecialchars($nomeCat).'\')" title="'.htmlspecialchars($nomeCat).'">
+        <img src="/img/'.$img.'.png" alt="'.htmlspecialchars($nomeCat).'">
+      </button>';
     }
     ?>
     <form action="listar_despesas.php" method="GET" style="display:inline;">
@@ -77,13 +73,63 @@ $nome = $_SESSION['nome'];
 
   <div class="graph-section">
     <h2>Resumo Visual dos Seus Gastos</h2>
-    <img src="/img/grafico.png?<?php echo time(); ?>" alt="Gráfico de despesas" class="grafico-img">
-    <form action="gerar_grafico.php" method="POST">
-      <button type="submit" class="botao-atualizar">Atualizar Gráfico</button>
-    </form>
+    <canvas id="graficoDespesas" width="400" height="200"></canvas>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    let grafico;
+
+    function gerarGrafico(destaque = null) {
+      fetch('dados_grafico.php')
+        .then(response => response.json())
+        .then(dados => {
+          const nomes = dados.map(item => item.nome);
+          const valores = dados.map(item => item.total);
+
+          const cores = nomes.map(nome => nome === destaque ? 'rgba(255, 99, 132, 0.7)' : 'rgba(54, 162, 235, 0.5)');
+          const bordas = nomes.map(nome => nome === destaque ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)');
+
+          const ctx = document.getElementById('graficoDespesas').getContext('2d');
+          if (grafico) grafico.destroy();
+
+          grafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: nomes,
+              datasets: [{
+                label: 'Despesas (R$)',
+                data: valores,
+                backgroundColor: cores,
+                borderColor: bordas,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        });
+    }
+
+    function destacarCategoria(categoria) {
+      gerarGrafico(categoria);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      gerarGrafico();
+    });
+
+    function toggleUserMenu() {
+      const dropdown = document.getElementById("userDropdown");
+      dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+    }
+  </script>
+
 </body>
 
 <footer>
@@ -91,8 +137,8 @@ $nome = $_SESSION['nome'];
   <h4>Contato:</h4>
   <ul>
     <li>
-      <a href="https://api.whatsapp.com/send/?phone=5515991592555&text=Site+ExpenSelf%0AOl%C3%A1%2C+tudo+bem%3F%0APoder%C3%ADamos+conversar%3F&type=phone_number&app_absent=0" target="_blank">
-        <img src="/img/icone-whatsaap.png" alt="Whatsaap" height="17"> Whatsaap
+      <a href="https://api.whatsapp.com/send/?phone=5515991592555&text=Site+ExpenSelf" target="_blank">
+        <img src="/img/icone-whatsaap.png" alt="WhatsApp" height="17"> WhatsApp
       </a>
     </li>
     <li>
@@ -107,5 +153,4 @@ $nome = $_SESSION['nome'];
     </li>
   </ul>
 </footer>
-
 </html>
