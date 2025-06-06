@@ -112,7 +112,7 @@ $result = $conn->query($sql);
   <h1 class="titulo-despesas">Receitas de <?php echo htmlspecialchars($nome_usuario); ?></h1>
 
   <div class="botoes-superiores">
-    <button class="botao-adicionar" onclick="location.href='e_nova_receita.html'">Adicionar Despesa</button>
+    <button class="botao-adicionar" onclick="location.href='e_nova_receita.html'">Adicionar Receita</button>
     <button on class="botao-exportar" onclick="location.href='exportar_receitas_pdf.php'">Exportar para PDF</button>
   </div>
 </div>
