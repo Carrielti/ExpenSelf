@@ -235,7 +235,6 @@ function gerarGraficoReceitas() {
             borderWidth: 1
           }]
         },
-        },
         options: {
           responsive: true,
           scales: {
@@ -259,27 +258,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   </script>
 
-</body>
+<footer style="background-color: #f8f9fa; padding: 30px 20px; text-align: center; margin-top: 40px; border-top: 1px solid #ddd;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <img src="/img/icone-logo.png" alt="ExpenSelf Logo" style="height: 40px; margin-bottom: 10px;" />
+    <h4 style="margin-bottom: 10px; color: #333;">ExpenSelf - Controle Financeiro Pessoal</h4>
+    <p style="margin: 10px 0; color: #666;">Organize suas finanças, visualize seus gastos e tome decisões inteligentes!</p>
 
-<footer>
-  <hr>
-  <h4>Contato:</h4>
-  <ul>
-    <li>
-      <a href="https://api.whatsapp.com/send/?phone=5515991592555&text=Site+ExpenSelf" target="_blank">
-        <img src="/img/icone-whatsaap.png" alt="WhatsApp" height="17"> WhatsApp
+    <div style="margin-top: 20px;">
+      <a href="https://api.whatsapp.com/send?phone=5515991592555" target="_blank" style="margin: 0 10px;">
+        <img src="/img/icone-whatsaap.png" alt="WhatsApp" height="24">
       </a>
-    </li>
-    <li>
-      <a href="https://www.instagram.com/carriel_ti/" target="_blank">
-        <img src="/img/icone-instagram.png" alt="Instagram" height="17"> Instagram
+      <a href="https://www.instagram.com/carriel_ti/" target="_blank" style="margin: 0 10px;">
+        <img src="/img/icone-instagram.png" alt="Instagram" height="24">
       </a>
-    </li>
-    <li>
-      <a href="https://github.com/Carrielti" target="_blank">
-        <img src="/img/icone-github.png" alt="GitHub" height="17"> GitHub
+      <a href="https://github.com/Carrielti" target="_blank" style="margin: 0 10px;">
+        <img src="/img/icone-github.png" alt="GitHub" height="24">
       </a>
-    </li>
-  </ul>
+    </div>
+
+    <p style="margin-top: 20px; font-size: 14px; color: #999;">&copy; <?php echo date('Y'); ?> ExpenSelf. Todos os direitos reservados.</p>
+  </div>
 </footer>
+
+</body>
 </html>
