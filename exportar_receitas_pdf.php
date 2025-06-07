@@ -1,5 +1,5 @@
 <?php
-require 'libs/dompdf/autoload.inc.php'; // ajuste se estiver em outro caminho
+require 'libs/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -14,26 +14,19 @@ if (!isset($_SESSION['id_usuario'])) {
 $id_usuario = $_SESSION['id_usuario'];
 $nome_usuario = $_SESSION['nome'];
 
-$sql = "SELECT nome, valor FROM receitas WHERE id_usuario = $id_usuario";
+$sql = "SELECT nome, valor, DATE_FORMAT(data_receita, '%d/%m/%Y') as data FROM receitas WHERE id_usuario = $id_usuario ORDER BY data_receita DESC";
 $result = $conn->query($sql);
 
 $receitas = [];
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $receitas[] = [
-            'nome' => $row['nome'],
-            'valor' => floatval($row['valor'])
-        ];
+        $receitas[] = $row;
     }
-
-    // Ordena do maior para o menor valor
-    usort($receitas, fn($a, $b) => $b['valor'] <=> $a['valor']);
 } else {
-    die("Nenhuma despesa encontrada.");
+    die("Nenhuma receita encontrada.");
 }
 
-// Criação do HTML
 $html = '
 <!DOCTYPE html>
 <html>
@@ -59,31 +52,29 @@ $html = '
     }
   </style>
   <title>ExpenSelf - Receitas - PDF</title>
-  <link rel="icon" href="/img/icone-logo.png" type="image/png">
 </head>
 <body>
   <h1>Relatório de Receitas - ExpenSelf</h1>
   <p style="text-align: center;">Usuário: <strong>' . htmlspecialchars($nome_usuario) . '</strong></p>
   <table>
-    <tr><th>Nome</th><th>Valor (R$)</th></tr>';
+    <tr><th>Nome</th><th>Valor (R$)</th><th>Data</th></tr>';
 
-foreach ($receitas as $receita) {
+foreach ($receitas as $r) {
     $html .= '<tr>
-                <td>' . htmlspecialchars($receita['nome']) . '</td>
-                <td>' . number_format($receita['valor'], 2, ',', '.') . '</td>
+                <td>' . htmlspecialchars($r['nome']) . '</td>
+                <td>' . number_format($r['valor'], 2, ',', '.') . '</td>
+                <td>' . $r['data'] . '</td>
               </tr>';
 }
 
 $html .= '</table></body></html>';
 
-// Instância do Dompdf
 $options = new Options();
 $options->set('isRemoteEnabled', true);
-
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("receitas_expenSelf.pdf", ["Attachment" => false]); // Exibe direto no navegador
+$dompdf->stream("receitas_expenSelf.pdf", ["Attachment" => false]);
 exit;
-
+?>

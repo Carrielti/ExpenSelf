@@ -1,5 +1,5 @@
 <?php
-require 'libs/dompdf/autoload.inc.php'; // ajuste se estiver em outro caminho
+require 'libs/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -14,26 +14,19 @@ if (!isset($_SESSION['id_usuario'])) {
 $id_usuario = $_SESSION['id_usuario'];
 $nome_usuario = $_SESSION['nome'];
 
-$sql = "SELECT nome, valor FROM despesas WHERE id_usuario = $id_usuario";
+$sql = "SELECT nome, valor, DATE_FORMAT(data_despesa, '%d/%m/%Y') as data FROM despesas WHERE id_usuario = $id_usuario ORDER BY data_despesa DESC";
 $result = $conn->query($sql);
 
 $despesas = [];
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $despesas[] = [
-            'nome' => $row['nome'],
-            'valor' => floatval($row['valor'])
-        ];
+        $despesas[] = $row;
     }
-
-    // Ordena do maior para o menor valor
-    usort($despesas, fn($a, $b) => $b['valor'] <=> $a['valor']);
 } else {
     die("Nenhuma despesa encontrada.");
 }
 
-// Criação do HTML
 $html = '
 <!DOCTYPE html>
 <html>
@@ -59,31 +52,29 @@ $html = '
     }
   </style>
   <title>ExpenSelf - Despesas - PDF</title>
-  <link rel="icon" href="/img/icone-logo.png" type="image/png">
 </head>
 <body>
   <h1>Relatório de Despesas - ExpenSelf</h1>
   <p style="text-align: center;">Usuário: <strong>' . htmlspecialchars($nome_usuario) . '</strong></p>
   <table>
-    <tr><th>Nome</th><th>Valor (R$)</th></tr>';
+    <tr><th>Nome</th><th>Valor (R$)</th><th>Data</th></tr>';
 
-foreach ($despesas as $despesa) {
+foreach ($despesas as $d) {
     $html .= '<tr>
-                <td>' . htmlspecialchars($despesa['nome']) . '</td>
-                <td>' . number_format($despesa['valor'], 2, ',', '.') . '</td>
+                <td>' . htmlspecialchars($d['nome']) . '</td>
+                <td>' . number_format($d['valor'], 2, ',', '.') . '</td>
+                <td>' . $d['data'] . '</td>
               </tr>';
 }
 
 $html .= '</table></body></html>';
 
-// Instância do Dompdf
 $options = new Options();
 $options->set('isRemoteEnabled', true);
-
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("despesas_expenSelf.pdf", ["Attachment" => false]); // Exibe direto no navegador
+$dompdf->stream("despesas_expenSelf.pdf", ["Attachment" => false]);
 exit;
-
+?>

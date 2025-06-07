@@ -72,16 +72,21 @@ $nome = $_SESSION['nome'];
     </form>
   </div>
 
-  <div class="graph-section" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
-  <div>
-    <h2>Gastos por Categoria</h2>
-    <canvas id="graficoDespesas" width="400" height="200"></canvas>
+  <div class="graficos-container">
+  <div class="grafico-box">
+    <h2>Despesas por Categoria</h2>
+    <canvas id="graficoDespesas"></canvas>
   </div>
-  <div>
+  <div class="grafico-box">
+    <h2>Receitas por Categoria</h2>
+    <canvas id="graficoReceitas"></canvas>
+  </div>
+  <div class="grafico-box">
     <h2>Receitas x Despesas</h2>
-    <canvas id="graficoComparativo" width="400" height="200"></canvas>
+    <canvas id="graficoComparativo"></canvas>
   </div>
 </div>
+
 
 <div class="saldo-section">
   <h3>Saldo Mensal Atual</h3>
@@ -97,6 +102,8 @@ $nome = $_SESSION['nome'];
 
   <script>
     let grafico;
+
+    
 
     function gerarGrafico(destaque = null) {
       fetch('dados_grafico.php')
@@ -190,9 +197,11 @@ function gerarGraficoComparativo() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  gerarGrafico();             // gráfico de categorias
-  gerarGraficoComparativo(); // gráfico receitas vs despesas
+  gerarGrafico();
+  gerarGraficoComparativo();
+  gerarGraficoReceitas(); // novo
 });
+
 
 // Chama API de saldo mensal
 fetch("calcular_saldo_mensal.php")
@@ -204,6 +213,48 @@ fetch("calcular_saldo_mensal.php")
   .catch(() => {
     document.getElementById("saldo-mensal").innerText = "Erro ao calcular saldo.";
   });
+
+  // Gráfico de Receitas por Categoria
+function gerarGraficoReceitas() {
+  fetch('dados_grafico_receitas.php')
+    .then(response => response.json())
+    .then(dados => {
+      const nomes = dados.map(item => item.nome);
+      const valores = dados.map(item => item.total);
+
+      const ctx = document.getElementById('graficoReceitas').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: nomes,
+          datasets: [{
+            label: 'Receitas (R$)',
+            data: valores,
+            backgroundColor: 'rgba(46, 204, 113, 0.6)',
+            borderColor: 'rgba(46, 204, 113, 1)',
+            borderWidth: 1
+          }]
+        },
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+}
+
+// Chamada quando o DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+  gerarGrafico();              // já existente para despesas
+  gerarGraficoReceitas();      // novo para receitas
+  gerarGraficoComparativo();   // já existente para comparação
+});
+
 
 
   </script>
